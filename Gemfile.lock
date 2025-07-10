@@ -325,6 +325,7 @@ DEPENDENCIES
   kamal
   puma (>= 5.0)
   rails (~> 8.0.2)
+  rubocop
   rubocop-rails-omakase
   solid_cache
   solid_queue
