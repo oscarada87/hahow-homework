@@ -2,7 +2,7 @@
 #
 # Table name: sections
 #
-#  id         :integer          not null, primary key
+#  id         :bigint           not null, primary key
 #  idx        :integer          not null
 #  name       :string           not null
 #  created_at :datetime         not null
@@ -15,7 +15,7 @@
 #
 # Foreign Keys
 #
-#  course_id  (course_id => courses.id)
+#  fk_rails_...  (course_id => courses.id)
 #
 class Section < ApplicationRecord
   belongs_to :course

@@ -2,7 +2,7 @@
 #
 # Table name: units
 #
-#  id          :integer          not null, primary key
+#  id          :bigint           not null, primary key
 #  content     :text             not null
 #  description :text
 #  idx         :integer          not null
@@ -17,7 +17,7 @@
 #
 # Foreign Keys
 #
-#  section_id  (section_id => sections.id)
+#  fk_rails_...  (section_id => sections.id)
 #
 require "test_helper"
 

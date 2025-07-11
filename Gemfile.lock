@@ -171,6 +171,7 @@ GEM
     parser (3.3.8.0)
       ast (~> 2.4.1)
       racc
+    pg (1.5.9)
     pp (0.6.2)
       prettyprint
     prettyprint (0.2.0)
@@ -256,14 +257,6 @@ GEM
       rubocop-rails (>= 2.30)
     ruby-progressbar (1.13.0)
     securerandom (0.4.1)
-    sqlite3 (2.7.2-aarch64-linux-gnu)
-    sqlite3 (2.7.2-aarch64-linux-musl)
-    sqlite3 (2.7.2-arm-linux-gnu)
-    sqlite3 (2.7.2-arm-linux-musl)
-    sqlite3 (2.7.2-arm64-darwin)
-    sqlite3 (2.7.2-x86_64-darwin)
-    sqlite3 (2.7.2-x86_64-linux-gnu)
-    sqlite3 (2.7.2-x86_64-linux-musl)
     sshkit (1.24.0)
       base64
       logger
@@ -310,11 +303,11 @@ DEPENDENCIES
   brakeman
   debug
   kamal
+  pg (>= 1.4)
   puma (>= 5.0)
   rails (~> 8.0.2)
   rubocop
   rubocop-rails-omakase
-  sqlite3 (>= 2.1)
   thruster
 
 BUNDLED WITH
