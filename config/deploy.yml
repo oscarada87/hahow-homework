@@ -7,7 +7,7 @@ image: oscarada87/hahow_homework
 # Deploy to these servers.
 servers:
   web:
-    - 157.230.251.234
+    - <%= ENV["DEPLOY_HOST"] %>
   # job:
   #   hosts:
   #     - 192.168.0.1
@@ -19,7 +19,7 @@ servers:
 # Note: If using Cloudflare, set encryption mode in SSL/TLS setting to "Full" to enable CF-to-app encryption.
 proxy:
   ssl: true
-  host: tanjimeow.com
+  host: <%= ENV["PROXY_HOST"] %>
 
 # Credentials for your image host.
 registry:
@@ -91,7 +91,7 @@ ssh:
 accessories:
   db:
     image: postgres:15
-    host: 157.230.251.234
+    host: <%= ENV["DEPLOY_HOST"] %>
     # Change to 3306 to expose port to the world instead of just local network.
     port: '5432'
     env:
