@@ -9,6 +9,8 @@ class CoursesControllerTest < ActionDispatch::IntegrationTest
   test "should get index" do
     get courses_url
     assert_response :success
+    data = JSON.parse(@response.body)
+    assert_equal 2, data.size
     assert_includes @response.body, @course1.name
   end
 
@@ -16,5 +18,12 @@ class CoursesControllerTest < ActionDispatch::IntegrationTest
     get course_url(@course2)
     assert_response :success
     assert_includes @response.body, @course2.name
+  end
+
+  test "should return 400 when course not found" do
+    get course_url(id: 999_999)
+    assert_response 400
+    assert_includes @response.body, "Course not found"
+    assert_includes @response.body, "40001"
   end
 end

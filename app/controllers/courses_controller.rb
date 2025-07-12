@@ -1,5 +1,5 @@
-class CoursesController < ApplicationController
-  before_action :set_course, only: [ :show, :update, :destroy ]
+class CoursesController < BaseController
+  # before_action :set_course, only: [ :show, :update, :destroy ]
 
   # GET /courses
   def index
@@ -22,7 +22,14 @@ class CoursesController < ApplicationController
 
   # GET /courses/:id
   def show
-    render json: @course.as_json(
+    # id = course_id_params[:id]
+    course = Course.includes(sections: :units).find_by(id: params.require(:id))
+    if course.nil?
+      return_error(status: 400, code: 40_001, error: StandardError.new("Course not found"), message: "Course not found")
+      return
+    end
+
+    render json: course.as_json(
       only: [ :id, :name, :teacher_name, :description ],
       include: {
         sections: {
@@ -64,9 +71,8 @@ class CoursesController < ApplicationController
   end
 
   private
-
   def set_course
-    @course = Course.includes(sections: :units).find(params[:id])
+    @course = Course.includes(sections: :units).find(params.require[:id])
   end
 
   def course_params
