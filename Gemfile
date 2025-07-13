@@ -46,4 +46,10 @@ group :development, :test do
 
   # 自動生成 model 欄位註解
   gem "annotaterb"
+
+  # 建立測試資料工具
+  gem "factory_bot_rails"
+
+  # 假資料生成工具
+  gem "faker"
 end
