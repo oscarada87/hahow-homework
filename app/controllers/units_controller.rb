@@ -15,13 +15,15 @@ class UnitsController < BaseController
 
   # DELETE /units/:id
   def destroy
-    unit = Unit.find_by(id: params.require(:id))
-    if unit.nil?
-      return_error(status: 400, code: 41_002, error: StandardError.new("Unit not found"), message: "Unit not found")
-      return
+    begin
+      service = DeleteUnitService.new(params.require(:id))
+      service.call
+      return_success(status: 200, code: 22_200, data: nil)
+    rescue DeleteUnitService::LastUnitError => e
+      return_error(status: 400, code: 41_003, error: e, message: e.message)
+    rescue ActiveRecord::RecordNotFound => e
+      return_error(status: 400, code: 41_002, error: e, message: "Unit not found")
     end
-    unit.destroy!
-    return_success(status: 200, code: 22_200, data: nil)
   end
 
   private
