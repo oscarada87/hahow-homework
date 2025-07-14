@@ -24,8 +24,5 @@ class UnitCreateForm
       )
       unit
     end
-  rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotFound => e
-    errors.add(:base, e.message)
-    false
   end
 end

@@ -31,9 +31,6 @@ class CourseCreateForm
       end
       course
     end
-  rescue ActiveRecord::RecordInvalid => e
-    errors.add(:base, e.message)
-    false
   end
 
   private

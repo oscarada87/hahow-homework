@@ -29,15 +29,15 @@ class SectionCreateForm
       end
       section
     end
-  rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotFound => e
-    errors.add(:base, e.message)
-    false
   end
 
   private
 
   def validate_units
-    return if units.blank?
+    if units.blank? || (units.is_a?(Array) && units.empty?)
+      errors.add(:units, "must not be empty")
+      return
+    end
     unless units.is_a?(Array)
       errors.add(:units, "must be an array")
       return
