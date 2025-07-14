@@ -1,5 +1,5 @@
 require "test_helper"
-
+require "ostruct"
 
 class BaseCoursesControllerTest < ActionDispatch::IntegrationTest
   setup do
@@ -54,5 +54,98 @@ class CoursesDeleteTest < BaseCoursesControllerTest
     assert_response 400
     assert_includes @response.body, "Course not found"
     assert_includes @response.body, "40001"
+  end
+end
+
+class CoursesCreateTest < ActionDispatch::IntegrationTest
+  setup do
+    @form = Minitest::Mock.new
+  end
+  test "should create course and return id" do
+    course = OpenStruct.new(id: 789)
+    @form.expect(:save, course)
+    CourseCreateForm.stub(:new, @form) do
+      post courses_url, params: {
+        name: "新課程",
+        teacher_name: "老師A",
+        description: "課程說明",
+        sections: [
+          {
+            name: "章節一",
+            idx: 0,
+            units: [
+              {
+                name: "單元一",
+                description: "單元一說明",
+                content: "內容A",
+                idx: 0
+              }
+            ]
+          }
+        ]
+      }
+      assert_response 201
+      json = JSON.parse(response.body)
+      assert_equal 20_100, json["code"]
+      assert_equal 789, json["data"]["id"]
+    end
+  end
+
+  test "should return error if course create fails" do
+    @form.expect(:save, false)
+    @form.expect(:errors, OpenStruct.new(full_messages: [ "Name can't be blank" ]))
+    CourseCreateForm.stub(:new, @form) do
+      post courses_url, params: {
+        name: "",
+        teacher_name: "老師A",
+        description: "課程說明"
+      }
+      assert_response 422
+      json = JSON.parse(response.body)
+      assert_equal 42_200, json["code"]
+      assert_match(/can't be blank/, json["message"])
+    end
+  end
+end
+
+class CoursesUpdateTest < ActionDispatch::IntegrationTest
+  setup do
+    @course_id = "1"
+    @form = Minitest::Mock.new
+  end
+
+  test "should update course basic info" do
+    @form.expect(:save, true)
+    CourseUpdateForm.stub(:new, @form) do
+      patch course_url(@course_id), params: {
+        name: "新課程名",
+        teacher_name: "新老師",
+        description: "新描述"
+      }
+      assert_response :success
+      json = JSON.parse(response.body)
+      assert_equal 20_200, json["code"]
+    end
+  end
+
+  test "should return error if params error" do
+    @form.expect(:save, false)
+    @form.expect(:errors, OpenStruct.new(full_messages: [ "Name can't be blank" ]))
+    CourseUpdateForm.stub(:new, @form) do
+      patch course_url(@course_id, params: { name: "" })
+      assert_response 422
+      json = JSON.parse(response.body)
+      assert_equal 42_200, json["code"]
+    end
+  end
+
+  test "should return 400 if course not found" do
+    @form.expect(:save, nil) { raise ActiveRecord::RecordNotFound }
+    CourseUpdateForm.stub(:new, @form) do
+      patch course_url(id: 999_999), params: { name: "X" }
+      assert_response 400
+      json = JSON.parse(response.body)
+      assert_equal 40_001, json["code"]
+    end
   end
 end

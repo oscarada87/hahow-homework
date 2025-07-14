@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CourseForm
+class CourseCreateForm
   include ActiveModel::Model
   include ActiveModel::Validations
 
@@ -31,9 +31,6 @@ class CourseForm
       end
       course
     end
-  rescue ActiveRecord::RecordInvalid => e
-    errors.add(:base, e.message)
-    false
   end
 
   private
