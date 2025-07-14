@@ -57,11 +57,18 @@ class CoursesController < BaseController
 
   # PATCH/PUT /courses/:id
   def update
-    # if @course.update(course_params)
-    #   render json: @course
-    # else
-    #   render json: @course.errors, status: :unprocessable_entity
-    # end
+    begin
+      form = CourseUpdateForm.new(params.require(:id), course_create_params)
+      updated_course = form.save
+      if updated_course
+        return_success(status: 200, code: 20_200)
+      else
+        error_message = form.errors.full_messages.join(", ")
+        return_error(status: 422, code: 42_200, error: StandardError.new(error_message), message: error_message)
+      end
+    rescue ActiveRecord::RecordNotFound => e
+      return_error(status: 400, code: 40_001, error: e, message: e.message)
+    end
   end
 
   # DELETE /courses/:id
