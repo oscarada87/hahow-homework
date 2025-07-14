@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CourseForm
+class CourseCreateForm
   include ActiveModel::Model
   include ActiveModel::Validations
 

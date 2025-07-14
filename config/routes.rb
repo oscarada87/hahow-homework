@@ -9,4 +9,6 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   resources :courses, except: [ :new, :edit ]
+  resources :sections, only: [ :create, :destroy ]
+  resources :units, only: [ :create, :destroy ]
 end

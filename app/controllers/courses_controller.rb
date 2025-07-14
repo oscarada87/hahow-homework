@@ -45,9 +45,9 @@ class CoursesController < BaseController
 
   # POST /courses
   def create
-    form = CourseForm.new(create_course_params)
+    form = CourseCreateForm.new(course_create_params)
     if form.save
-      return_success(status: 201, code: 20_100)
+      return_success(status: 201, code: 20_100, data: { id: form.course.id })
     else
       return_error(status: 422, code: 42_200, error: StandardError.new(form.errors.full_messages.join(", ")), message: form.errors.full_messages.join(", "))
     end
@@ -75,7 +75,7 @@ class CoursesController < BaseController
 
   private
 
-  def create_course_params
+  def course_create_params
     params.permit(
       :name, :teacher_name, :description,
       sections: [
