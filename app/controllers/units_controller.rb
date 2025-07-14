@@ -3,10 +3,12 @@ class UnitsController < BaseController
   def create
     form = UnitCreateForm.new(unit_create_params)
     begin
-      if form.save
-        return_success(status: 201, code: 20_100, data: { id: form.unit.id })
+      unit = form.save
+      if unit
+        return_success(status: 201, code: 20_100, data: { id: unit.id })
       else
-        return_error(status: 422, code: 42_200, error: StandardError.new(form.errors.full_messages.join(", ")), message: form.errors.full_messages.join(", "))
+        error_message = form.errors.full_messages.join(", ")
+        return_error(status: 422, code: 42_200, error: StandardError.new(), message: error_message)
       end
     rescue ActiveRecord::RecordNotFound => e
       return_error(status: 400, code: 40_001, error: e, message: "Section not found")

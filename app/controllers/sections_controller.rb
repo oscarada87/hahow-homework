@@ -3,10 +3,12 @@ class SectionsController < BaseController
   def create
     form = SectionCreateForm.new(section_create_params)
     begin
-      if form.save
-        return_success(status: 201, code: 20_100, data: { id: form.section.id })
+      section = form.save
+      if section
+        return_success(status: 201, code: 20_100, data: { id: section.id })
       else
-        return_error(status: 422, code: 42_200, error: StandardError.new(form.errors.full_messages.join(", ")), message: form.errors.full_messages.join(", "))
+        error_message = form.errors.full_messages.join(", ")
+        return_error(status: 422, code: 42_200, error: StandardError.new(error_message), message: error_message)
       end
     rescue ActiveRecord::RecordNotFound => e
       return_error(status: 400, code: 40_001, error: e, message: e.message)
@@ -18,7 +20,7 @@ class SectionsController < BaseController
     begin
       service = DeleteSectionService.new(params.require(:id))
       service.call
-      return_success(status: 200, code: 21_200, data: nil)
+      return_success(status: 200, code: 20_000, data: nil)
     rescue ActiveRecord::RecordNotFound => e
       return_error(status: 400, code: 40_001, error: e, message: e.message)
     rescue DeleteSectionService::LastSectionError => e
