@@ -45,13 +45,12 @@ class CoursesController < BaseController
 
   # POST /courses
   def create
-    # @course = Course.new(course_params)
-
-    # if @course.save
-    #   render json: @course, status: :created
-    # else
-    #   render json: @course.errors, status: :unprocessable_entity
-    # end
+    form = CourseForm.new(create_course_params)
+    if form.save
+      return_success(status: 201, code: 20_100)
+    else
+      return_error(status: 422, code: 42_200, error: StandardError.new(form.errors.full_messages.join(", ")), message: form.errors.full_messages.join(", "))
+    end
   end
 
   # PATCH/PUT /courses/:id
@@ -72,5 +71,19 @@ class CoursesController < BaseController
     end
     course.destroy!
     return_success(status: 200, code: 20_000, data: nil)
+  end
+
+  private
+
+  def create_course_params
+    params.permit(
+      :name, :teacher_name, :description,
+      sections: [
+        :id, :name, :idx,
+        units: [
+          :id, :name, :description, :content, :idx
+        ]
+      ]
+    )
   end
 end
