@@ -75,4 +75,17 @@ class UnitCreateFormTest < ActiveSupport::TestCase
       form.save
     end
   end
+
+  test "should not create unit if index is not unique" do
+    params = {
+      section_id: @section.id,
+      name: "單元二",
+      description: "說明A",
+      content: "內容A",
+      idx: 0
+    }
+    form = UnitCreateForm.new(params)
+    refute form.save
+    assert_includes form.errors.full_messages.join, "must be unique within the same section"
+  end
 end

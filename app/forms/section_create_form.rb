@@ -14,8 +14,12 @@ class SectionCreateForm
   def save
     return false unless valid?
     ActiveRecord::Base.transaction do
-      course = Course.find_by(id: course_id)
+      course = Course.includes(:sections).find_by(id: course_id)
       raise ActiveRecord::RecordNotFound, "Course not found" if course.nil?
+      if course.sections.where(idx: idx).exists?
+        errors.add(:idx, "must be unique within the same course")
+        return false
+      end
       section = course.sections.create!(name: name, idx: idx)
       if units.present?
         units.each do |unit_params|

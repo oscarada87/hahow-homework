@@ -73,4 +73,19 @@ class SectionCreateFormTest < ActiveSupport::TestCase
       form.save
     end
   end
+
+  test "index not unique should not create section" do
+    params = {
+      course_id: @course.id,
+      name: "章節二",
+      idx: 0,
+      units: [
+        { name: "單元一", description: "說明A", content: "內容A", idx: 0 },
+        { name: "單元二", description: "說明B", content: "內容B", idx: 1 }
+      ]
+    }
+    form = SectionCreateForm.new(params)
+    refute form.save
+    assert_includes form.errors.full_messages.join, "must be unique within the same course"
+  end
 end
