@@ -74,6 +74,8 @@ rails server
   用於部署 Rails
 - bootsnap
   用於減少 Rails 啟動時間
+- simplecov
+  用於測試覆蓋率報告
 
 ## 關於註解
 
