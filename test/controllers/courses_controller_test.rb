@@ -124,7 +124,7 @@ class CoursesUpdateTest < ActionDispatch::IntegrationTest
       }
       assert_response :success
       json = JSON.parse(response.body)
-      assert_equal 20_200, json["code"]
+      assert_equal 20_000, json["code"]
     end
   end
 

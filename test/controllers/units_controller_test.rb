@@ -72,6 +72,7 @@ class UnitsControllerDestroyTest < ActionDispatch::IntegrationTest
     DeleteUnitService.stub(:new, ->(_id) { @service }) do
       delete unit_url(@unit_id)
       assert_response :success
+      assert_includes @response.body, "20000"
     end
   end
 
@@ -80,7 +81,7 @@ class UnitsControllerDestroyTest < ActionDispatch::IntegrationTest
     DeleteUnitService.stub(:new, ->(_id) { @service }) do
       delete unit_url(@unit_id)
       assert_response 400
-      assert_includes @response.body, "41002"
+      assert_includes @response.body, "40001"
     end
   end
 
@@ -89,7 +90,7 @@ class UnitsControllerDestroyTest < ActionDispatch::IntegrationTest
     DeleteUnitService.stub(:new, ->(_id) { @service }) do
       delete unit_url(@unit_id)
       assert_response 400
-      assert_includes @response.body, "41003"
+      assert_includes @response.body, "40002"
     end
   end
 end
