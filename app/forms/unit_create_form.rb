@@ -15,9 +15,9 @@ class UnitCreateForm
     return false unless valid?
     ActiveRecord::Base.transaction do
       section = Section.includes(:units).find_by(id: section_id)
-      raise ActiveRecord::RecordNotFound, "Section not found" if section.nil?
+      raise ActiveRecord::RecordNotFound, 'Section not found' if section.nil?
       if section.units.where(idx: idx).exists?
-        errors.add(:idx, "must be unique within the same section")
+        errors.add(:idx, 'must be unique within the same section')
         return false
       end
       unit = section.units.create!(

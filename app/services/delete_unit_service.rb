@@ -8,12 +8,12 @@ class DeleteUnitService
   end
 
   def call
-    raise ActiveRecord::RecordNotFound, "Unit not found" if @unit.nil?
+    raise ActiveRecord::RecordNotFound, 'Unit not found' if @unit.nil?
     section = @unit.section
     Unit.transaction do
       section.reload
       if section.units.count == 1
-        raise LastUnitError, "Cannot delete the last unit of the section"
+        raise LastUnitError, 'Cannot delete the last unit of the section'
       end
       @unit.destroy!
     end

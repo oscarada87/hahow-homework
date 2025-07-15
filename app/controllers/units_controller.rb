@@ -7,11 +7,11 @@ class UnitsController < BaseController
       if unit
         return_success(status: 201, code: 20_100, data: { id: unit.id })
       else
-        error_message = form.errors.full_messages.join(", ")
+        error_message = form.errors.full_messages.join(', ')
         return_error(status: 422, code: 42_200, error: StandardError.new(), message: error_message)
       end
     rescue ActiveRecord::RecordNotFound => e
-      return_error(status: 400, code: 40_001, error: e, message: "Section not found")
+      return_error(status: 400, code: 40_001, error: e, message: 'Section not found')
     end
   end
 
@@ -24,7 +24,7 @@ class UnitsController < BaseController
     rescue DeleteUnitService::LastUnitError => e
       return_error(status: 400, code: 40_002, error: e, message: e.message)
     rescue ActiveRecord::RecordNotFound => e
-      return_error(status: 400, code: 40_001, error: e, message: "Unit not found")
+      return_error(status: 400, code: 40_001, error: e, message: 'Unit not found')
     end
   end
 

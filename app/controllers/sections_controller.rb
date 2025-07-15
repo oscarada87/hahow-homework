@@ -7,7 +7,7 @@ class SectionsController < BaseController
       if section
         return_success(status: 201, code: 20_100, data: { id: section.id })
       else
-        error_message = form.errors.full_messages.join(", ")
+        error_message = form.errors.full_messages.join(', ')
         return_error(status: 422, code: 42_200, error: StandardError.new(error_message), message: error_message)
       end
     rescue ActiveRecord::RecordNotFound => e

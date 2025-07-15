@@ -86,7 +86,7 @@ RSpec.describe 'CoursesController', type: :request do
 
     it 'returns error if course create fails' do
       allow(form).to receive(:save).and_return(false)
-      allow(form).to receive(:errors).and_return(OpenStruct.new(full_messages: ["Name can't be blank"]))
+      allow(form).to receive(:errors).and_return(OpenStruct.new(full_messages: [ "Name can't be blank" ]))
       allow(CourseCreateForm).to receive(:new).and_return(form)
       post courses_url, params: {
         name: '',
@@ -119,7 +119,7 @@ RSpec.describe 'CoursesController', type: :request do
 
     it 'returns error if params error' do
       allow(form).to receive(:save).and_return(false)
-      allow(form).to receive(:errors).and_return(OpenStruct.new(full_messages: ["Name can't be blank"]))
+      allow(form).to receive(:errors).and_return(OpenStruct.new(full_messages: [ "Name can't be blank" ]))
       allow(CourseUpdateForm).to receive(:new).and_return(form)
       patch course_url(course_id), params: { name: '' }
       expect(response).to have_http_status(422)

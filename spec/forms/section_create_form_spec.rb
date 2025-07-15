@@ -80,7 +80,7 @@ RSpec.describe SectionCreateForm, type: :form do
     end
 
     context 'when index is not unique' do
-      it 'does not create section' do
+      it 'section - does not create section' do
         params = {
           course_id: course.id,
           name: '章節二',
@@ -93,6 +93,21 @@ RSpec.describe SectionCreateForm, type: :form do
         form = SectionCreateForm.new(params)
         expect(form.save).to be_falsey
         expect(form.errors.full_messages.join).to include('must be unique within the same course')
+      end
+
+      it 'unit - does not create section' do
+        params = {
+          course_id: course.id,
+          name: '章節二',
+          idx: 1,
+          units: [
+            { name: '單元一', description: '說明A', content: '內容A', idx: 0 },
+            { name: '單元二', description: '說明B', content: '內容B', idx: 0 }
+          ]
+        }
+        form = SectionCreateForm.new(params)
+        expect(form.save).to be_falsey
+        expect(form.errors.full_messages.join).to include('unit idx must be unique')
       end
     end
   end

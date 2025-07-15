@@ -9,17 +9,36 @@ RSpec.describe CourseUpdateForm, type: :form do
 
   describe '#save' do
     context 'with valid basic info update' do
-      it 'updates course successfully' do
-        form = CourseUpdateForm.new(course.id, { 
-          name: '新課程', 
-          teacher_name: '新老師', 
-          description: '新描述' 
+      it 'updates course, section, unit successfully' do
+        form = CourseUpdateForm.new(course.id, {
+          name: '新課程',
+          teacher_name: '新老師',
+          description: '新描述',
+          sections: [
+            {
+              id: section1.id,
+              name: '更新的章節一',
+              idx: 0,
+              units: [
+                { id: unit1.id, name: '更新的單元一', description: '更新的描述', content: '更新的內容', idx: 0 },
+                { id: unit2.id, name: '更新的單元二', description: '更新的描述', content: '更新的內容', idx: 1 }
+              ]
+            }
+          ]
         })
         expect(form.save).to be_truthy
         course.reload
         expect(course.name).to eq('新課程')
         expect(course.teacher_name).to eq('新老師')
         expect(course.description).to eq('新描述')
+
+        updated_section = course.sections.find(section1.id)
+        expect(updated_section.name).to eq('更新的章節一')
+
+        updated_unit1 = updated_section.units.find(unit1.id)
+        updated_unit2 = updated_section.units.find(unit2.id)
+        expect(updated_unit1.name).to eq('更新的單元一')
+        expect(updated_unit2.name).to eq('更新的單元二')
       end
     end
 
@@ -55,7 +74,7 @@ RSpec.describe CourseUpdateForm, type: :form do
       it 'raises RecordNotFound' do
         params = {
           sections: [
-            { id: 9999, name: '不存在的章節' }
+            { id: -1, name: '不存在的章節' }
           ]
         }
         expect {
@@ -68,11 +87,24 @@ RSpec.describe CourseUpdateForm, type: :form do
       it 'raises RecordNotFound' do
         params = {
           sections: [
-            { id: section1.id, units: [ { id: 9999, name: '不存在的單元' } ] }
+            { id: section1.id, units: [ { id: -1, name: '不存在的單元' } ] }
           ]
         }
         expect {
           CourseUpdateForm.new(course.id, params).save
+        }.to raise_error(ActiveRecord::RecordNotFound)
+      end
+    end
+
+    context 'when course does not exist' do
+      it 'raises RecordNotFound' do
+        params = {
+          name: '新課程名稱',
+          teacher_name: '新老師',
+          description: '新描述'
+        }
+        expect {
+          CourseUpdateForm.new(-1, params).save
         }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end

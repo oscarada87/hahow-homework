@@ -24,7 +24,7 @@ RSpec.describe 'UnitsController', type: :request do
 
     it "returns error if unit create fails" do
       allow(create_form).to receive(:save).and_return(false)
-      allow(create_form).to receive(:errors).and_return(OpenStruct.new(full_messages: ["Name can't be blank"]))
+      allow(create_form).to receive(:errors).and_return(OpenStruct.new(full_messages: [ "Name can't be blank" ]))
       allow(UnitCreateForm).to receive(:new).and_return(create_form)
       post units_url, params: {
         section_id: 1,
