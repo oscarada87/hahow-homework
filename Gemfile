@@ -54,5 +54,7 @@ group :development, :test do
   gem "kamal", require: false
 
   # 測試框架
-  gem 'rspec-rails', group: [:development, :test]
+  gem "rspec-rails", require: false
+
+  gem "simplecov", require: false
 end
