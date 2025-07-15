@@ -52,4 +52,7 @@ group :development, :test do
 
   # Deploy this application anywhere as a Docker container [https://kamal-deploy.org]
   gem "kamal", require: false
+
+  # 測試框架
+  gem 'rspec-rails', group: [:development, :test]
 end
