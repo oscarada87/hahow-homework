@@ -11,7 +11,7 @@ class CourseUpdateForm
 
   def initialize(id, params)
     @course = Course.find_by(id: id)
-    raise ActiveRecord::RecordNotFound, "Course not found" unless @course
+    raise ActiveRecord::RecordNotFound, 'Course not found' unless @course
     @name = params[:name] || @course.name
     @teacher_name = params[:teacher_name] || @course.teacher_name
     @description = params[:description] || @course.description
@@ -28,7 +28,7 @@ class CourseUpdateForm
       update_ids = input_section_idxs.map { |s| s[:id] }.compact
       all_section_idxs = course.sections.where.not(id: update_ids).pluck(:idx) + input_section_idxs.map { |s| s[:idx] }
       if all_section_idxs.size != all_section_idxs.uniq.size
-        errors.add(:base, "index of sections is not unique")
+        errors.add(:base, 'index of sections is not unique')
         return false
       end
 
@@ -53,18 +53,18 @@ class CourseUpdateForm
 
       if sections.present?
         sections.each do |section_params|
-          raise ActiveRecord::RecordNotFound, "Section not found" unless section_params[:id]
+          raise ActiveRecord::RecordNotFound, 'Section not found' unless section_params[:id]
           section = course.sections.find_by(id: section_params[:id])
-          raise ActiveRecord::RecordNotFound, "Section not found" unless section
+          raise ActiveRecord::RecordNotFound, 'Section not found' unless section
           section.name = section_params[:name] if section_params[:name]
           section.idx = section_params[:idx] if section_params[:idx]
           section.save!
 
           if section_params[:units].present?
             section_params[:units].each do |unit_params|
-              raise ActiveRecord::RecordNotFound, "Unit not found" unless unit_params[:id]
+              raise ActiveRecord::RecordNotFound, 'Unit not found' unless unit_params[:id]
               unit = section.units.find_by(id: unit_params[:id])
-              raise ActiveRecord::RecordNotFound, "Unit not found" unless unit
+              raise ActiveRecord::RecordNotFound, 'Unit not found' unless unit
               unit.name = unit_params[:name] if unit_params[:name]
               unit.description = unit_params[:description] if unit_params[:description]
               unit.content = unit_params[:content] if unit_params[:content]

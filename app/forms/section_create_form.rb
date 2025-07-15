@@ -15,9 +15,9 @@ class SectionCreateForm
     return false unless valid?
     ActiveRecord::Base.transaction do
       course = Course.includes(:sections).find_by(id: course_id)
-      raise ActiveRecord::RecordNotFound, "Course not found" if course.nil?
+      raise ActiveRecord::RecordNotFound, 'Course not found' if course.nil?
       if course.sections.where(idx: idx).exists?
-        errors.add(:idx, "must be unique within the same course")
+        errors.add(:idx, 'must be unique within the same course')
         return false
       end
       section = course.sections.create!(name: name, idx: idx)
@@ -39,11 +39,11 @@ class SectionCreateForm
 
   def validate_units
     if units.blank? || (units.is_a?(Array) && units.empty?)
-      errors.add(:units, "must not be empty")
+      errors.add(:units, 'must not be empty')
       return
     end
     unless units.is_a?(Array)
-      errors.add(:units, "must be an array")
+      errors.add(:units, 'must be an array')
       return
     end
     unit_idxs = []
@@ -60,7 +60,7 @@ class SectionCreateForm
       unit_idxs << unit[:idx]
     end
     if unit_idxs.uniq.size != unit_idxs.size
-      errors.add(:units, "unit idx must be unique")
+      errors.add(:units, 'unit idx must be unique')
     end
   end
 end

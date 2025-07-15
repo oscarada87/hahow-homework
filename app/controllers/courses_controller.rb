@@ -23,7 +23,7 @@ class CoursesController < BaseController
   def show
     course = Course.includes(sections: :units).find_by(id: params.require(:id))
     if course.nil?
-      return_error(status: 400, code: 40_001, error: StandardError.new("Course not found"), message: "Course not found")
+      return_error(status: 400, code: 40_001, error: StandardError.new('Course not found'), message: 'Course not found')
       return
     end
 
@@ -50,7 +50,7 @@ class CoursesController < BaseController
     if course
       return_success(status: 201, code: 20_100, data: { id: course.id })
     else
-      error_message = form.errors.full_messages.join(", ")
+      error_message = form.errors.full_messages.join(', ')
       return_error(status: 422, code: 42_200, error: StandardError.new(error_message), message: error_message)
     end
   end
@@ -63,7 +63,7 @@ class CoursesController < BaseController
       if updated_course
         return_success(status: 200, code: 20_000)
       else
-        error_message = form.errors.full_messages.join(", ")
+        error_message = form.errors.full_messages.join(', ')
         return_error(status: 422, code: 42_200, error: StandardError.new(error_message), message: error_message)
       end
     rescue ActiveRecord::RecordNotFound => e
@@ -75,7 +75,7 @@ class CoursesController < BaseController
   def destroy
     course = Course.find_by(id: params.require(:id))
     if course.nil?
-      return_error(status: 400, code: 40_001, error: StandardError.new("Course not found"), message: "Course not found")
+      return_error(status: 400, code: 40_001, error: StandardError.new('Course not found'), message: 'Course not found')
       return
     end
     course.destroy!

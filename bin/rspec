@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+require "rubygems"
+require "bundler/setup"
+
+# explicit rspec config for consistency and performance
+ARGV.unshift("--require", File.expand_path("../spec/spec_helper.rb", __dir__))
+
+load Gem.bin_path("rspec", "rspec")

@@ -37,7 +37,7 @@ class CourseCreateForm
 
   def validate_sections_and_units
     if sections.blank? || !sections.is_a?(Array) || sections.empty?
-      errors.add(:sections, "must be present and an array")
+      errors.add(:sections, 'must be present and an array')
       return
     end
     idxs = []
@@ -72,7 +72,7 @@ class CourseCreateForm
       end
     end
     if idxs.uniq.size != idxs.size
-      errors.add(:sections, "section idx must be unique")
+      errors.add(:sections, 'section idx must be unique')
     end
   end
 end
