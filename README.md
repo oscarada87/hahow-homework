@@ -135,3 +135,6 @@ API 提供欄位 "idx" 讓前端可以控制排序。過往經驗這種類型的
 
 - Kamal deploy 預設 proxy 行為
   Kamal 部署時會自動啟用內建的 kamal-proxy 作為 reverse proxy。若有需求同時使用如 Nginx 等第三方 proxy 工具，需額外研究相關整合或替代方案，以避免 proxy 設定上的衝突或重疊。
+
+- 移除 thruster 導致部署失敗
+  在移除 thruster gem 後，Kamal 的 proxy 無法正確偵測到健康檢查的 route。原因為 kamal proxy 預設檢查 port 80，解決方法為在 Kamal 的設定中明確指定健康檢查的 port，並將 health check 的 route 設定為在沒有 SSL 的情況下也能被存取。
